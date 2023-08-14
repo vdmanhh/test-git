@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import { checkSchema } from 'express-validator'
 import dataBaseService from '~/services/database.services'
 import userService from '~/services/users.services'
+import { hashPassword } from '~/untils/crypto'
 import { validation } from '~/untils/validation'
 
 export const UserValidator = (req: Request, res: Response, next: NextFunction) => {
@@ -120,9 +121,10 @@ export const loginValidator = validation(
       errorMessage: 'Email format wrong',
       custom: {
         options: async (value, { req }) => {
-          const user = await dataBaseService.User.findOne({ email: value })
+          const { password } = req.body
+          const user = await dataBaseService.User.findOne({ email: value, password: hashPassword(password) })
           if (user === null) {
-            throw new Error('User not found')
+            throw new Error('Email or password incorrect')
           }
           req.user = user
           return true

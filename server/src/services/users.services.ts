@@ -5,6 +5,7 @@ import { RegisterReqBody } from '~/models/requests/user.request'
 import { hashPassword } from '~/untils/crypto'
 import { signToken } from '~/untils/jwt'
 import { TokenType } from '~/contants/enum'
+import RefreshToken from '~/models/schemas/refresh_token.schema'
 
 class UserService {
   private signAccessToken(user_id: string) {
@@ -38,6 +39,13 @@ class UserService {
 
     const user_id = result?.insertedId.toString()
     const [access_token, refresh_token] = await this.signAccessAndRefreshToken(user_id)
+    await dataBaseService.RefreshToken.insertOne(
+      new RefreshToken({
+        token: refresh_token,
+        user_id: new ObjectId(user_id),
+        _id: objectId
+      })
+    )
 
     return { ...result, access_token, refresh_token }
   }
@@ -49,6 +57,13 @@ class UserService {
 
   async login(user_id: string) {
     const [access_token, refresh_token] = await this.signAccessAndRefreshToken(user_id)
+    await dataBaseService.RefreshToken.insertOne(
+      new RefreshToken({
+        token: refresh_token,
+        user_id: new ObjectId(user_id),
+        _id: new ObjectId()
+      })
+    )
     return {
       access_token,
       refresh_token
