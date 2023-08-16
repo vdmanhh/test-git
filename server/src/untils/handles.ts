@@ -5,9 +5,6 @@ export const wrapRequestHandle = (func: RequestHandler) => {
     try {
       await func(req, res, next)
     } catch (error) {
-      console.log(333333)
-      console.log('error123', error)
-
       next(error)
     }
 

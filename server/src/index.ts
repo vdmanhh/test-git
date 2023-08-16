@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 
 app.use(bodyParser.json())
 app.use(express.json())
-app.use('/api', useRouter)
+app.use('/api/user', useRouter)
 
 app.use(defaultErrorHandle)
 
