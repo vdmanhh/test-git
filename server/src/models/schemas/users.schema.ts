@@ -21,6 +21,16 @@ interface UserType {
   cover_photo?: string
 }
 
+export interface UpdateUserRequest {
+  name: string
+  date_of_birth: Date
+  bio: string
+  website: string
+  username: string
+  avatar: string
+  cover_photo: string
+  location?: string
+}
 export default class User {
   _id: ObjectId
   name: string

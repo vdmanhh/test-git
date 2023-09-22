@@ -1,5 +1,6 @@
 import { Request } from 'express'
 import User from './models/schemas/users.schema'
+import { UserVerifyStatus } from './contants/enum'
 declare module 'express' {
   interface Request {
     user?: User
@@ -8,6 +9,7 @@ declare module 'express' {
       token_type: number
       iat: number
       exp: number
+      verify: UserVerifyStatus
     }
     refreshTokenInfo?: {
       _id: ObjectId

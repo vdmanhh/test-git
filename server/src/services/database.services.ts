@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import { Collection } from 'mongodb'
 import User from '~/models/schemas/users.schema'
 import RefreshToken from '~/models/schemas/refresh_token.schema'
+import { Follow } from '~/models/schemas/follow.schema'
 dotenv.config()
 
 class DatabaseService {
@@ -28,6 +29,10 @@ class DatabaseService {
 
   get RefreshToken(): Collection<RefreshToken> {
     return this.db.collection(process.env.DB_REFRESH_TOKEN_COLLECTIONS as string)
+  }
+
+  get Follow(): Collection<Follow> {
+    return this.db.collection(process.env.DB_FOLLOWS as string)
   }
 }
 
